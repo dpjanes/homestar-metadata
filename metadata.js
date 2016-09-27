@@ -25,6 +25,11 @@
 const iotdb = require('iotdb');
 const _ = iotdb._;
 
+const path = require("path");
+const fs = require("fs");
+
+const errors = require("iotdb-errors");
+const iotdb_thing = require('iotdb-thing');
 const iotdb_transport_iotdb = require('iotdb-transport-iotdb');
 
 /**
@@ -32,40 +37,73 @@ const iotdb_transport_iotdb = require('iotdb-transport-iotdb');
  */
 const thing_metadata = function(request, response, locals, done) {
     if (!request.user || !request.user.is_owner) {
-        return done(new Error("Permission denied"));
+        return done(new errors.NotAuthorized());
     }
 
-    iotdb_transporter = iotdb_transport_iotdb.make({});
-    iotdb_transport.one({
+    const iotdb_transporter = iotdb_transport_iotdb.make({});
+    iotdb_transporter.one({
         id: request.params.thing_id,
-    }, 
+    }).subscribe( 
         bandd => {
             const thing = iotdb_thing.make(bandd);
 
-            locals.thing_id = request.params.thing_id;
-            locals.zones = _.map(locals.homestar.data.zones(), _process_zone);
-            locals.facets = _.map(locals.homestar.data.facets(), _process_facet);
+            if (request.method === "POST") {
+                const body = request.body;
+    
+                if (!_.is.Empty(body.name)) {
+                    thing.name(body.name);
+                }
+
+                thing.facets(body.facets);
+                thing.zones(body.zones);
+
+                process.nextTick(() => {
+                    iotdb_transporter.put({
+                        id: thing.thing_id(),
+                        band: "meta",
+                        value: _.d.compose.shallow(
+                            {
+                                "@timestamp": _.timestamp.make(),
+                            }, 
+                            thing.state("meta")
+                        ),
+                    }).subscribe(
+                        pd => {},
+                        error => done(error),
+                        () => done(null, "/#" + thing.thing_id())
+                    )
+                });
+
+                return;
+            }
+
+            const _thing_zones = thing.zones();
+            const _all_zones = zones();
+            const _process_zone = zone => ({
+                value: zone,
+                name: zone,
+                selected: _thing_zones.indexOf(zone) > -1,
+            });
+
+            const _thing_facets = thing.facets();
+            const _all_facets = facets();
+            const _process_facet = facet => ({
+                value: facet,
+                name: facet.replace(/^.*:/, ":"),
+                selected: _thing_facets.indexOf(facet) > -1,
+            });
+
+
+            done(null, {
+                id: thing.thing_id(),
+                name: thing.name(),
+                facets: _all_facets.map(_process_facet),
+                zones: _all_zones.map(_process_zone),
+            });
         },
-        error => {
-            return done(new Error("Thing not found"));
-        }
-    )
+        error => done(error)
+    );
 
-    locals.metadata = thing.state("meta");
-    locals.metadata_facets = _.ld.list(locals.metadata, 'iot:facet', []);
-    locals.metadata_zones = _.ld.list(locals.metadata, 'iot:zone', []);
-
-    const _process_zone = zone => ({
-        value: zone,
-        name: zone,
-        selected: locals.metadata_zones.indexOf(zone) > -1,
-    });
-
-    const _process_facet = facet => ({
-        value: facet,
-        name: facet.replace(/^.*:/, ":"),
-        selected: locals.metadata_facets.indexOf(facet) > -1,
-    });
 
 
     /*
@@ -95,12 +133,24 @@ const thing_metadata = function(request, response, locals, done) {
         response.redirect("/things#" + locals.thing_id);
         return done(null, true);
     }
-    */
 
     return done(null);
+    */
 };
+
+const _read_txt = path => fs.readFileSync(path, 'utf-8')
+    .split("\n")
+    .map(line => line.replace(/#.*$/, ''))
+    .map(line => line.replace(/^ */, ''))
+    .map(line => line.replace(/ *$/, ''))
+    .filter(line => !_.is.Empty(line));
+
+const facets = () => _read_txt(path.join(__dirname, "data", "facets.txt"))
+const zones = () => _read_txt(path.join(__dirname, "data", "zones.txt"))
 
 /**
  *  API
  */
 exports.thing_metadata = thing_metadata;
+exports.zones = zones;
+exports.facets = facets;

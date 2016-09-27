@@ -20,14 +20,7 @@ fieldset[disabled] .select2-search input[type=text] {
 {% endblock %}
 {% block content %}
 
-    <h1>Metadata</h1>
-    <p>
-    </p>
-    <p>
-    {{ thing_id }}
-    </p>
-    {#
-    #}
+    <h1>Edit</h1>
     
 <form 
     role="form"
@@ -40,17 +33,14 @@ fieldset[disabled] .select2-search input[type=text] {
 {% include "form_h_input.html" %}
 {% include "form_h_select.html" %}
 
-    {# <h2>Edit</h2> #}
-    <h3>Filtering</h3>
-    <p>
-    These fields make it easy for you to organize Things in your Cookbooks and Node.JS code
-    - e.g. by name, by function ("facets"), or by where it is ("zones").
-    </p>
+<!--
+<pre>{{ d.thing|json(2) }}</pre>
+-->
 
-{{ form_h_input({ key: "_iot_thing", value: thing_id, label: "Thing ID", errors: null, readonly: true }) }}
-{{ form_h_input({ key: "schema:name", value: metadata['schema:name'], label: "Name", errors: null }) }}
-{{ form_h_select({ key: "iot:facet", value: metadata_facets, multiple: true, label: "Facets", choices: facets, errors: null }) }}
-{{ form_h_select({ key: "iot:zone", value: metadata_zones, multiple: true, label: "Zones", choices: zones, errors: null }) }}
+{{ form_h_input({ key: "id", value: d.id, label: "Thing ID", errors: null, readonly: true }) }}
+{{ form_h_input({ key: "name", value: d.name, label: "Name", errors: null }) }}
+{{ form_h_select({ key: "facets", value: d.facets, multiple: true, label: "Facets", choices: d.facets, errors: null }) }}
+{{ form_h_select({ key: "zones", value: d.zones, multiple: true, label: "Zones", choices: d.zones, errors: null }) }}
 
 <!-- Button -->
 <div class="form-group">
@@ -66,13 +56,6 @@ fieldset[disabled] .select2-search input[type=text] {
 </fieldset>
 </form>
 
-    <h2>How to use it</h3>
-    <h3>Name</h3>
-    <pre>iot.things().with_name("My Name")</pre>
-    <h3>Facets</h3>
-    <pre>iot.things().with_facet(":lighting")</pre>
-    <h3>Zones</h3>
-    <pre>iot.things().with_zone("Basename")</pre>
 {% endblock %}
 {% block body_footer %}
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/select2.min.js"></script>

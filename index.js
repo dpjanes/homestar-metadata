@@ -44,4 +44,7 @@ exports.homestar = {
     },
 }
 
+exports.zones = metadata.zones;
+exports.facets = metadata.facets;
+
 exports.module_folder = __dirname;

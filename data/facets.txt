@@ -22,7 +22,9 @@ iot-facet:io.monitor
 iot-facet:io.mouse
 iot-facet:lighting
 iot-facet:lighting.control
+iot-facet:lighting.dimmer
 iot-facet:lighting.light
+iot-facet:lighting.switch
 iot-facet:media
 iot-facet:media.player
 iot-facet:media.player.blu-ray
@@ -37,11 +39,16 @@ iot-facet:media.receiver
 iot-facet:media.tv
 iot-facet:power
 iot-facet:power.battery
+iot-facet:power.dimmer
 iot-facet:power.mains
+iot-facet:power.plug
 iot-facet:power.solar
+iot-facet:power.switch
 iot-facet:security
 iot-facet:security.alarm
+iot-facet:security.chime
 iot-facet:security.control
+iot-facet:security.doorbell
 iot-facet:sensor
 iot-facet:sensor.chemical
 iot-facet:sensor.fire
