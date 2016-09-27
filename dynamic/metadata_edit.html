@@ -52,16 +52,6 @@ fieldset[disabled] .select2-search input[type=text] {
 {{ form_h_select({ key: "iot:facet", value: metadata_facets, multiple: true, label: "Facets", choices: facets, errors: null }) }}
 {{ form_h_select({ key: "iot:zone", value: metadata_zones, multiple: true, label: "Zones", choices: zones, errors: null }) }}
 
-{#
-    <h3>Access Control</h3>
-    <p>
-    These fields control who can view and change this Thing.
-    </p>
-
-{{ form_h_select({ key: "iot:access.read", value: metadata_access_read, multiple: true, label: "View", choices: access_read, errors: null }) }}
-{{ form_h_select({ key: "iot:access.write", value: metadata_access_write, multiple: true, label: "Control", choices: access_write, errors: null }) }}
-#}
-
 <!-- Button -->
 <div class="form-group">
   <label class="col-md-2 control-label" for="submit"></label>
