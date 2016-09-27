@@ -4,9 +4,10 @@
         "url": "https://github.com/dpjanes/homestar-metadata/issues"
     }, 
     "dependencies": {
-        "iotdb": ">=3.0.0", 
-        "iotdb-transport": "~3.0.8", 
-        "iotdb-transport-iotdb": "~3.0.4"
+        "iotdb": "",
+        "iotdb-errors": "",
+        "iotdb-thing": "",
+        "iotdb-transport-iotdb": ""
     }, 
     "description": "IOTDB Home☆Star metadata editor module", 
     "devDependencies": {
