@@ -4,12 +4,12 @@
         "url": "https://github.com/dpjanes/homestar-metadata/issues"
     }, 
     "dependencies": {
-        "iotdb": "",
-        "iotdb-errors": "",
-        "iotdb-thing": "",
-        "iotdb-transport-iotdb": ""
+        "iotdb": ">=3.0.0", 
+        "iotdb-errors": "~3.0.2", 
+        "iotdb-thing": "~3.0.9", 
+        "iotdb-transport-iotdb": "~3.0.5"
     }, 
-    "description": "IOTDB Home☆Star metadata editor module", 
+    "description": "IOTDB Home\u2606Star metadata editor module", 
     "devDependencies": {
         "grunt": "~1.0.1", 
         "grunt-contrib-jshint": "~1.0.0", 
@@ -34,5 +34,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "3.0.3"
+    "version": "3.0.5"
 }
