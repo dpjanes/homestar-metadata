@@ -78,64 +78,20 @@ const thing_metadata = function(request, response, locals, done) {
             }
 
             const _thing_zones = thing.zones();
-            const _all_zones = zones();
-            const _process_zone = zone => ({
-                value: zone,
-                name: zone,
-                selected: _thing_zones.indexOf(zone) > -1,
-            });
+            const _process_zone = zone => _.d.add(zone, "selected", _thing_zones.indexOf(zone.value) > -1);
 
             const _thing_facets = thing.facets();
-            const _all_facets = facets();
-            const _process_facet = facet => ({
-                value: facet,
-                name: facet.replace(/^.*:/, ":"),
-                selected: _thing_facets.indexOf(facet) > -1,
-            });
-
+            const _process_facet = facet => _.d.add(facet, "selected", _thing_facets.indexOf(facet.value) > -1);
 
             done(null, {
                 id: thing.thing_id(),
                 name: thing.name(),
-                facets: _all_facets.map(_process_facet),
-                zones: _all_zones.map(_process_zone),
+                facets: facets().map(_process_facet),
+                zones: zones().map(_process_zone),
             });
         },
         error => done(error)
     );
-
-
-
-    /*
-    if (request.method === "POST") {
-        const updated = {};
-
-        const name = request.body['schema:name']
-        if (name && name.length && name !== locals.metadata['schema:name']) {
-            updated['schema:name'] = name;
-        }
-
-        const new_facets = _.ld.list(request.body, 'iot:facet', []);
-        if (!_.is.Equal(locals.metadata_facets, new_facets)) {
-            updated['iot:facet'] = new_facets;
-        }
-
-        const new_zones = _.ld.list(request.body, 'iot:zone', []);
-        if (!_.is.Equal(locals.metadata_zones, new_zones)) {
-            updated['iot:zone'] = new_zones;
-        }
-
-        if (!_.is.Empty(updated)) {
-            thing.update("meta", updated)
-            _.extend(locals.metadata, updated);
-        }
-
-        response.redirect("/things#" + locals.thing_id);
-        return done(null, true);
-    }
-
-    return done(null);
-    */
 };
 
 const _read_txt = path => fs.readFileSync(path, 'utf-8')
@@ -146,7 +102,18 @@ const _read_txt = path => fs.readFileSync(path, 'utf-8')
     .filter(line => !_.is.Empty(line));
 
 const facets = () => _read_txt(path.join(__dirname, "data", "facets.txt"))
+    .map(facet => ({
+        value: facet,
+        name: facet.replace(/^.*:/, ":"),
+    }))
+    .sort((a, b) => _.is.unsorted(a.name, b.name))
+
 const zones = () => _read_txt(path.join(__dirname, "data", "zones.txt"))
+    .map(zone => ({
+        value: zone,
+        name: zone,
+    }))
+    .sort((a, b) => _.is.unsorted(a.name, b.name))
 
 /**
  *  API

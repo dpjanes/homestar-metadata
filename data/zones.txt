@@ -9,8 +9,13 @@ Basement Stairs
 Basement Washroom
 Bedroom
 Breakfast Nook
+Cellar
 Child's Bedroom
+Christmas Lights
+Christmas Tree
+Decorations
 Den
+Desk
 Dining Room
 First Floor
 First Floor Bathroom
@@ -26,6 +31,7 @@ Garage Door
 Gazebo
 Great Room
 Guest Room
+Hanukkah Bush
 Kitchen
 Kitchen Door
 Laundry Room
@@ -36,6 +42,8 @@ Main Floor Washroom
 Master Bedroom
 Nanny Suite
 Office
+Office Desk
+Playroom
 Powder Room
 Rec Room
 Second Bedroom

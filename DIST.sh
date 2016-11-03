@@ -30,7 +30,7 @@ echo "=================="
     update-package --increment-version --package "$PACKAGE" --homestar || exit 1
 
     tar cf - \
-        --exclude "node_modules" 
+        --exclude "node_modules" \
         --exclude "Gruntfile.js" \
         --exclude "xxx*" \
         --exclude "yyy*" \

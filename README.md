@@ -6,6 +6,17 @@ IOTDB Home☆Star metadata editor module
 # About
 
 Installing this Module will allow you to edit metadata of your Things when using Home☆Star. 
+In particular, you will be able to edit:
+
+* the **Name** of the Thing
+* the **Facets** of the Thing, i.e. what does the Thing do
+* the **Zones** of the Thing, i.e. where is the Thing located
+
+When the module is installed and configured, a "star" symbol will
+appear right of the name of the Thing in the main list.
+[[See photo of main list](https://raw.githubusercontent.com/dpjanes/homestar-metadata/master/docs/main.jpg)].
+Clicking on this star will bring you to the editor page.
+[[See photo of editor](https://raw.githubusercontent.com/dpjanes/homestar-metadata/master/docs/editor.jpg)].
 
 # Installation and Configuration
 
@@ -16,41 +27,16 @@ Installing this Module will allow you to edit metadata of your Things when using
 
 ## Installation
 
-    $ npm install -g homestar    ## may require sudo
-    $ homestar install homestar-aws
+	$ npm install -g homestar ## may require sudo
+    $ npm install homestar-metadata
+    $ npm install homestar-persist
+
+The second module is needed to keep the edits you make around between sessons!
 
 ## Configuration
 
-### Create a HomeStar Account
+In `boot/index.js` add the following lines:
 
-* go to [https://homestar.io](https://homestar.io)
-* click on [Sign In](https://homestar.io/sign/in)
+    iotdb.use("homestar-metadata")
+    iotdb.use("homestar-persist")
 
-A popup window will lead you through the installation process.
-You will need access to a mobile phone, as this
-uses Facebook's [Account Kit](https://developers.facebook.com/docs/accountkit).
-
-### Create a Runner
-
-* go to [Runners](https://homestar.io/runners)
-* click on [Make new Runner](https://homestar.io/runners/add)
-
-This will bring you to a new page. Then click on the
-**Show Access Tokens** button to the right.
-
-It will give you a set of command line instructions to set up 
-your access Keys.
-
-# Use
-
-## Stand Alone
-
-Just:
-
-    const iotdb = require('iotdb')
-    iotdb.use('homestar-aws')
-
-## With HomeStar Runner
-
-If you are doing `homestar runner` [docs](https://github.com/dpjanes/node-iotdb/blob/master/docs/homestar.md),
-this will be loaded automatically.
